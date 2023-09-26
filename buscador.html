@@ -1,0 +1,135 @@
+<script>
+    // buscador principal
+    
+    document.addEventListener("DOMContentLoaded", function () {
+    const form = document.querySelector("form[role='search']");
+    const searchInput = form.querySelector("input[type='search']");
+    const cards = document.querySelectorAll(".search-post-card");
+    const title = document.getElementById("title");
+    const title2 = document.getElementById("title2");
+    const noResultsSection = document.querySelector(".search-no-results");
+
+    // Función para quitar tildes y caracteres especiales de un texto
+    function removeAccents(text) {
+        return text
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toLowerCase();
+    }
+
+    // Función para obtener el parámetro de consulta 'q' de la URL
+    function getQueryParameter(parameterName) {
+        const queryString = window.location.search;
+        const urlSearchParams = new URLSearchParams(queryString);
+        return urlSearchParams.get(parameterName);
+    }
+
+    // Función para establecer el título
+    function setTitle(searchText) {
+        setTimeout(() => {
+            title.innerHTML = `<h1> Resultados de búsqueda para: ${searchText} </h1>`;
+            title2.innerHTML = `<a href="/masterclass">Master UR Class</a> > <span>Resultados de buscar '${searchText}'</span>`;
+        }, 400);
+    }
+
+    // Función para mostrar u ocultar la sección de resultados vacíos
+    function toggleNoResultsSection(show) {
+        if (show) {
+            noResultsSection.style.display = "block";
+        } else {
+            noResultsSection.style.display = "none";
+        }
+    }
+
+    // Obtener la consulta de búsqueda de la URL
+    const queryFromURL = getQueryParameter("q");
+
+    // Establecer el título inicialmente, incluso si no se proporciona una palabra de búsqueda
+    if (window.location.pathname.includes("/masterclass/busqueda")) {
+        setTitle(queryFromURL || ""); // Establecer el título vacío si no se proporciona una palabra de búsqueda
+    }
+
+    if (queryFromURL) {
+        // Si hay una consulta de búsqueda en la URL, llenar el campo de búsqueda
+        searchInput.value = queryFromURL.toLowerCase();
+
+        // Inicialmente, ocultar la sección de resultados vacíos
+        toggleNoResultsSection(false);
+
+        // Aplicar el filtro automáticamente
+        let hasResults = false;
+        cards.forEach(function (card) {
+            const cardText = removeAccents(card.textContent).toLowerCase();
+            const searchTerm = removeAccents(queryFromURL).toLowerCase();
+            if (cardText.includes(searchTerm)) {
+                card.style.display = "block";
+                hasResults = true; // Se encontraron resultados
+            } else {
+                card.style.display = "none";
+            }
+        });
+
+        // Mostrar la sección de resultados vacíos si no se encontraron resultados
+        toggleNoResultsSection(!hasResults);
+    }
+
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const searchText = searchInput.value.toLowerCase();
+
+        // Establecer el título solo si estamos en la página de búsqueda
+        if (window.location.pathname.includes("/masterclass/busqueda")) {
+            setTitle(searchText || ""); // Establecer el título vacío si no se proporciona una palabra de búsqueda
+        }
+
+        // Redirigir al usuario con la nueva consulta de búsqueda después de establecer el título
+        setTimeout(() => {
+            window.location.href = "/masterclass/busqueda?q=" + searchText;
+        }, 0);
+    });
+
+    // Manejar el evento beforeunload para establecer el título antes de la recarga
+    window.addEventListener("beforeunload", function () {
+        const searchText = searchInput.value.toLowerCase();
+        setTitle(searchText || ""); // Establecer el título antes de la recarga
+    });
+});
+
+    // buscador secundario
+    
+   document.addEventListener("DOMContentLoaded", function () {
+    const searchInput = document.getElementById("searchInput");
+    const courseItems = document.querySelectorAll(".offer-item");
+    const noResultsSection = document.querySelector(".search-no-results");
+
+    searchInput.addEventListener("input", function () {
+        const searchTerm = searchInput.value.trim().toLowerCase();
+        let hasResults = false;
+
+        courseItems.forEach(function (courseItem) {
+            const courseTitle = courseItem.querySelector("h3 a").textContent.trim().toLowerCase();
+            const courseCategory = courseItem.querySelector(".offer-category").textContent.trim().toLowerCase();
+            const courseDescription = courseItem.querySelector("p").textContent.trim().toLowerCase();
+
+            if (
+                courseTitle.includes(searchTerm) ||
+                courseCategory.includes(searchTerm) ||
+                courseDescription.includes(searchTerm)
+            ) {
+                courseItem.classList.remove("d-none");
+                hasResults = true;
+            } else {
+                courseItem.classList.add("d-none");
+            }
+        });
+
+        // Mostrar u ocultar la sección de resultados vacíos en tiempo real
+        if (hasResults) {
+            noResultsSection.style.display = "none"; // Ocultar la sección si hay resultados
+        } else {
+            noResultsSection.style.display = "block"; // Mostrar la sección si no hay resultados
+        }
+    });
+});
+
+</script>

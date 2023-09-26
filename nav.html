@@ -1,0 +1,136 @@
+<nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+                <a class="navbar-brand master-class-brand" href="/masterclass"><img
+                                src="/sites/masterclass/files/2023-09/masterurclass-logo.png" alt="Master UR Class"
+                                loading="lazy"></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarMainContent" aria-controls="navbarMainContent" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarMainContent">
+                        <form role="search" id="search-form">
+                                <input class="form-control" type="search" placeholder="Buscar cursos"
+                                        aria-label="Search" id="search-input">
+                                <button class="btn btn-search" type="submit">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                                <path
+                                                        d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z">
+                                                </path>
+                                        </svg>
+                                </button>
+                        </form>
+                        <ul class="navbar-nav mb-2 mb-lg-0">
+                                <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" role="button"
+                                                data-bs-toggle="dropdown" aria-expanded="false">Oferta académica</a>
+                                        <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item"
+                                                                href="/masterclass/categorias/administracion-y-negocios">Administración
+                                                                y negocios</a>
+                                                </li>
+                                                <li><a class="dropdown-item"
+                                                                href="/masterclass/categorias/ciencias-de-la-computacion-y-matematicas">Ciencias
+                                                                de la
+                                                                computación y matemáticas</a></li>
+                                                <li><a class="dropdown-item"
+                                                                href="/masterclass/categorias/ciencias-naturales">Ciencias
+                                                                naturales</a></li>
+                                                <li><a class="dropdown-item"
+                                                                href="/masterclass/categorias/ciencias-sociales">Ciencias
+                                                                sociales</a></li>
+                                                <li><a class="dropdown-item"
+                                                                href="/masterclass/categorias/creatividad-arte-y-cultura">Creatividad
+                                                                arte y cultura</a>
+                                                </li>
+                                                <li><a class="dropdown-item"
+                                                                href="/masterclass/categorias/direccion-de-investigacion">Dirección
+                                                                de investigación</a></li>
+                                                <li><a class="dropdown-item"
+                                                                href="/masterclass/categorias/economia">Economía</a>
+                                                </li>
+                                                <li><a class="dropdown-item"
+                                                                href="/masterclass/categorias/humanidades">Humanidades</a>
+                                                </li>
+                                                <li><a class="dropdown-item"
+                                                                href="/masterclass/categorias/ingenieria-ciencia-y-tecnologia">Ingeniería,
+                                                                Ciencia y
+                                                                Tecnología</a></li>
+                                                <li><a class="dropdown-item"
+                                                                href="/masterclass/categorias/salud-medicina-y-bienestar">Salud,
+                                                                medicina y bienestar</a></li>
+                                        </ul>
+                                </li>
+                                <li class="nav-item"><a class="nav-link" href="/masterclass/profesores">Profesores</a>
+                                </li>
+                                <li class="nav-item"><a class="nav-link" href="/masterclass/cursos">Cursos</a></li>
+                                <li class="nav-item d-block" id="botonAcceder"><a class="nav-link"
+                                                href="/masterclass/user/login">Acceder</a></li>
+                                <li class="nav-item d-block" id="botonIncribir"><a class="nav-link important"
+                                                href="https://educacioncontinua.urosario.edu.co/jurisprudencia/seminario/masterurclass?utm_medio=WebsiteD57"
+                                                target="_blank">Inscríbete</a></li>
+                        </ul>
+                </div>
+        </div>
+</nav>
+
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+                const toolbar = document.getElementById("toolbar-bar");
+                const botonesRojo = document.querySelectorAll('.botonRojo');
+                const iconElements = document.querySelectorAll("i.fa-unlock");
+                const enlacesVideo = document.querySelectorAll('a.botonRojo');
+
+                const botonAcceder = document.getElementById("botonAcceder");
+                const botonCerrarSesion = document.getElementById("botonCerrarSesion");
+                const botonIncribir = document.getElementById("botonIncribir");
+
+                setTimeout(function () {
+                        const elementoBody = document.querySelector('body[data-once~="big-pipe-early-behaviors"]');
+
+                        if (toolbar && elementoBody) {
+                                console.log(" admin")
+                        } else if (toolbar == null && elementoBody == null) {
+                                console.log("no se ha iniciado sesion")
+                                if (botonesRojo.length > 0) {
+                                        botonesRojo.forEach(function (boton) {
+                                                boton.style.display = 'none';
+                                        });
+
+                                        iconElements.forEach(function (iconElement) {
+                                                iconElement.classList.remove("fa-unlock");
+                                                iconElement.classList.add("fa-lock");
+                                        });
+                                }
+                        }
+
+                        if (toolbar == null && elementoBody) {
+                                console.log("no admin")
+
+                                if (botonAcceder) {
+                                        botonAcceder.remove();
+                                }
+                                if (botonIncribir) {
+                                        botonIncribir.remove();
+                                }
+                                // Crear una plantilla literal para el elemento <li>
+                                const nuevoLiHTML = `
+                                        <li class="nav-item" id="botonCerrarSesion">
+                                        <a class="nav-link important" href="https://urosariodev.prod.acquia-sites.com/masterclass/user/logout">
+                                                Cerrar Sesión
+                                        </a>
+                                        </li>
+                                `;
+                                // Convertir la plantilla literal en un elemento DOM
+                                const nuevoLi = document.createRange().createContextualFragment(nuevoLiHTML);
+                                // Obtener la referencia a la lista <ul>
+                                const listaNav = document.querySelector(".navbar-nav");
+                                // Agregar el nuevo elemento <li> al final de la lista
+                                if (listaNav) {
+                                        listaNav.appendChild(nuevoLi);
+                                }
+                        }
+                }, 100);
+        });
+</script>
