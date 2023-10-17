@@ -85,6 +85,7 @@
                 const botonAcceder = document.getElementById("botonAcceder");
                 const botonCerrarSesion = document.getElementById("botonCerrarSesion");
                 const botonIncribir = document.getElementById("botonIncribir");
+                const mensajeElement = document.querySelector('div[aria-label="Mensaje de estado"]');
 
                 setTimeout(function () {
                         const elementoBody = document.querySelector('body[data-once~="big-pipe-early-behaviors"]');
@@ -104,31 +105,37 @@
                                         });
                                 }
                         }
-
                         if (toolbar == null && elementoBody) {
                                 console.log("no admin")
 
-                                if (botonAcceder) {
-                                        botonAcceder.remove();
-                                }
-                                if (botonIncribir) {
-                                        botonIncribir.remove();
-                                }
-                                // Crear una plantilla literal para el elemento <li>
-                                const nuevoLiHTML = `
-                                        <li class="nav-item" id="botonCerrarSesion">
-                                        <a class="nav-link important" href="https://urosariodev.prod.acquia-sites.com/masterclass/user/logout">
-                                                Cerrar Sesión
-                                        </a>
-                                        </li>
-                                `;
-                                // Convertir la plantilla literal en un elemento DOM
-                                const nuevoLi = document.createRange().createContextualFragment(nuevoLiHTML);
-                                // Obtener la referencia a la lista <ul>
-                                const listaNav = document.querySelector(".navbar-nav");
-                                // Agregar el nuevo elemento <li> al final de la lista
-                                if (listaNav) {
-                                        listaNav.appendChild(nuevoLi);
+                                // Verificar si existe un elemento con aria-label igual a "Mensaje de estado"
+                                const elementsWithAriaLabel = document.querySelectorAll('[aria-label="Mensaje de estado"]');
+
+                                if (elementsWithAriaLabel.length > 0) {
+                                        window.location.href = "/masterclass/user/logout";
+                                } else {
+                                        if (botonAcceder) {
+                                                botonAcceder.remove();
+                                        }
+                                        if (botonIncribir) {
+                                                botonIncribir.remove();
+                                        }
+                                        // Crear una plantilla literal para el elemento <li>
+                                        const nuevoLiHTML = `
+                                                <li class="nav-item" id="botonCerrarSesion">
+                                                        <a class="nav-link important" href="/masterclass/user/logout">
+                                                                Cerrar Sesión
+                                                        </a>
+                                                </li>
+                                                `;
+                                        // Convertir la plantilla literal en un elemento DOM
+                                        const nuevoLi = document.createRange().createContextualFragment(nuevoLiHTML);
+                                        // Obtener la referencia a la lista <ul>
+                                        const listaNav = document.querySelector(".navbar-nav");
+                                        // Agregar el nuevo elemento <li> al final de la lista
+                                        if (listaNav) {
+                                                listaNav.appendChild(nuevoLi);
+                                        }
                                 }
                         }
                 }, 100);
